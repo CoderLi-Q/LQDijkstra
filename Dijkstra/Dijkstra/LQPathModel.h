@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) NSString *startPoint;
 @property (nonatomic ,copy) NSString *endPoint;
 @property (nonatomic ,assign) float value;
+@property (nonatomic , strong) NSArray *paths;
 
+-(void)addPaths:(NSArray *)paths;
+-(void)removePath:(NSString *)path;
 -(BOOL)isPoint1:(NSString *)point1 point2:(NSString *)point2;
 @end
 
