@@ -10,7 +10,7 @@
 
 @implementation LQPathModel
 -(NSString *)description{
-    return [NSString stringWithFormat:@"startPoint = %@,endPoint = %@,value=%.f,paths = %@",_startPoint,_endPoint,_value,_paths];
+    return [NSString stringWithFormat:@"startPoint = %@,endPoint = %@,value=%.f",_startPoint,_endPoint,_value];
 }
 -(void)removePath:(NSString *)path{
     if (path == nil) {

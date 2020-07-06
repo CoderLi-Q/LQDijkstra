@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) NSString *startPoint;
 @property (nonatomic ,copy) NSString *endPoint;
 @property (nonatomic ,assign) float value;
-@property (nonatomic , strong) NSArray *paths;
+@property (nonatomic , strong) NSArray *paths;//暂时没有实现
 
 -(void)addPaths:(NSArray *)paths;
 -(void)removePath:(NSString *)path;

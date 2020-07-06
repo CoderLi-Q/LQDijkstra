@@ -9,10 +9,8 @@
 #import "ViewController.h"
 #import "LQPathModel.h"
 @interface ViewController ()
-//@property (nonatomic ,copy) NSString *startPoint;
+
 @property (nonatomic , strong) NSArray *pathArray;
-//@property (nonatomic , strong) NSArray *allPoints;
-//@property (nonatomic , strong) NSArray <LQPathModel *>*allFirstPoint;
 
 @end
 
@@ -73,10 +71,7 @@
       
       
       //算法实现
-      
-       //初始化所有顶点
-//      NSArray *points = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G"];
-//      self.allPoints = points;
+
        //初始化起点
           LQPathModel *pathStart = [[LQPathModel alloc] init];
           pathStart.startPoint = @"D";
@@ -87,31 +82,10 @@
       //初始化除起点外的顶点
         NSMutableArray *noStartPoints = [NSMutableArray arrayWithArray:@[@"A",@"B",@"C",@"E",@"F",@"G"]];
       
+    
 
-//      NSMutableArray *firstPoints = [NSMutableArray arrayWithCapacity:2];
-//      for (NSString *point in noStartPoints) {
-//
-//          LQPathModel *pathStart = [[LQPathModel alloc] init];
-//          pathStart.startPoint = @"D";
-//          for (LQPathModel *p in pathArray) {
-//              if ([p isPoint1:pathStart.startPoint point2:point]) {
-//                  pathStart.endPoint = point;
-//                  pathStart.value = p.value;
-//                  [firstPoints addObject:pathStart];
-//                  break;
-//              }
-//
-//          }
-//      }
-//      self.allFirstPoint = firstPoints;
-//
-//
        
       NSMutableArray *uArray = [NSMutableArray arrayWithCapacity:2];
-       
-       
-       
-    
       NSString *endPoint = @"D";
         NSString *lastPoint = @"";
       while (![endPoint isEqualToString:@"A"]) {
