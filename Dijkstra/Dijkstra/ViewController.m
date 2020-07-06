@@ -9,6 +9,10 @@
 #import "ViewController.h"
 #import "LQPathModel.h"
 @interface ViewController ()
+@property (nonatomic ,copy) NSString *startPoint;
+@property (nonatomic , strong) NSArray *pathArray;
+@property (nonatomic , strong) NSArray *allPoints;
+@property (nonatomic , strong) NSArray <LQPathModel *>*allFirstPoint;
 
 @end
 
@@ -57,7 +61,7 @@
         }
         [pathArray addObject:pathModel];
     }
-    
+    self.pathArray = pathArray;
     NSLog(@"原始数据%@--count = %ld",pathArray,pathArray.count);
    
     
@@ -66,7 +70,7 @@
     
      //初始化所有顶点
     NSArray *points = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G"];
-    
+    self.allPoints = points;
      //初始化起点
         LQPathModel *pathStart = [[LQPathModel alloc] init];
         pathStart.startPoint = @"D";
@@ -75,10 +79,14 @@
         NSMutableArray *sArray = [NSMutableArray arrayWithObject:pathStart];
     NSLog(@"S数据 = %@, count = %ld",sArray,sArray.count);
     //初始化除起点外的顶点
-      NSArray *noStartPoints = @[@"A",@"B",@"C",@"E",@"F",@"G"];
+      NSMutableArray *noStartPoints = [NSMutableArray arrayWithArray:@[@"A",@"B",@"C",@"E",@"F",@"G"]];
     
-    NSMutableArray *uArray = [NSMutableArray arrayWithCapacity:5];
     
+   NSMutableArray *uArray = [self getNewUArray:noStartPoints nextPoint:@"D" lastPoint:nil sArray:sArray];
+    
+    
+    uArray = [NSMutableArray arrayWithCapacity:5];
+    NSMutableArray *firstPoints = [NSMutableArray arrayWithCapacity:2];
     for (NSString *point in noStartPoints) {
         
         LQPathModel *pathStart = [[LQPathModel alloc] init];
@@ -87,15 +95,11 @@
         for (LQPathModel *p in pathArray) {
             pathStart.startPoint = @"D";
             pathStart.endPoint = point;
-            if ([p.startPoint isEqualToString:pathStart.startPoint] &&
-                [p.endPoint isEqualToString:point]) {
+            
+            if ([p isPoint1:pathStart.startPoint point2:point]) {
                 pathStart.value = p.value;
                 isHave = YES;
-                break;
-            }else if ([p.endPoint isEqualToString:pathStart.startPoint]  &&
-                      [p.startPoint isEqualToString:point]){
-                pathStart.value = p.value;
-                isHave = YES;
+                [firstPoints addObject:pathStart];
                 break;
             }
             
@@ -110,11 +114,12 @@
         
         
     }
+    self.allFirstPoint = firstPoints;
     NSLog(@"U数据%@--count = %ld",uArray,uArray.count);
     
     
-    
-//    while (uArray>0) {
+    NSString *endPoint = @"";
+    while (![endPoint isEqualToString:@"A"]) {
         //找到U中最小value
            LQPathModel *mixValuepath = nil;
            for (LQPathModel *path in uArray) {
@@ -133,11 +138,84 @@
         NSLog(@"sArray = %@",sArray);
         //将mixValuepath移除U数组
         [uArray removeObject:mixValuepath];
+        NSLog(@"uArray = %@",uArray);
         //切换顶点
         
-//    }
-   
+        NSString *nextPoint = mixValuepath.endPoint;
+        endPoint = nextPoint;
+        //更新U数组
+    noStartPoints = [NSMutableArray arrayWithArray:noStartPoints];
+    [noStartPoints removeObject:nextPoint];
+        
+    uArray = [self getNewUArray:noStartPoints nextPoint:nextPoint lastPoint:mixValuepath.startPoint sArray:sArray];
+    NSLog(@"uArray = %@",uArray);
+        NSLog(@"===========");
+    }
+    NSLog(@"sArray = %@",sArray);
     
+}
+
+
+
+
+-(NSMutableArray *)getNewUArray:(NSMutableArray *)otherPoints
+                      nextPoint:(NSString *)nextPoint
+                      lastPoint:(NSString *)lastPoint sArray:(NSMutableArray *)sArray{
+    NSMutableArray *uArray = [NSMutableArray arrayWithCapacity:5];
+    for (NSString *point in otherPoints) {
+        
+        LQPathModel *pathStart = [[LQPathModel alloc] init];
+        
+        BOOL isHave = NO;
+        for (LQPathModel *p in self.pathArray) {
+            pathStart.startPoint = nextPoint;
+            pathStart.endPoint = point;
+            
+            if ([p isPoint1:nextPoint point2:point]) {
+                
+                
+                if (lastPoint == nil) {//没有lastPoint
+                    
+                    pathStart.value = p.value;
+                    isHave = YES;
+                    break;
+                }else{
+                    if (![p isPoint1:lastPoint point2:point]) {//跟last
+                        pathStart.value = p.value;
+                        
+                       
+                        for (LQPathModel *model in sArray) {
+                            if ([nextPoint isEqualToString:model.endPoint]) {
+                                pathStart.value = p.value + model.value;
+                                //如果point与@“D”
+                                for (LQPathModel *pa in self.allFirstPoint) {
+                                    if ([pa.endPoint isEqualToString:point]) {
+                                        pathStart.value = pa.value;
+                                    }
+                                }
+                                
+                                
+                            }
+                        }
+                        
+                        isHave = YES;
+                        break;
+                    }
+                }
+            }
+            
+        }
+        
+        if (!isHave) {
+            pathStart.endPoint = point;
+            pathStart.value = MAXFLOAT;
+        }
+        [uArray addObject:pathStart];
+        
+        
+        
+    }
+    return uArray;
 }
 
 

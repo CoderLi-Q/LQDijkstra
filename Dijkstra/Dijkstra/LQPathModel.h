@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LQPathModel : NSObject
 @property (nonatomic ,copy) NSString *startPoint;
 @property (nonatomic ,copy) NSString *endPoint;
-@property (nonatomic ,assign) float value ;
+@property (nonatomic ,assign) float value;
+
+-(BOOL)isPoint1:(NSString *)point1 point2:(NSString *)point2;
 @end
 
 NS_ASSUME_NONNULL_END
