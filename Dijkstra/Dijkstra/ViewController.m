@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "LQDijkstraTool.h"
+#import "LQResultViewController.h"
 @interface ViewController ()
 
 
@@ -20,12 +20,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = UIColor.whiteColor;
-    CGFloat value =  LQDijkstraTool.new.getDijkstra;
-    NSLog(@"value = %.f",value);
-  
+    self.title = @"准备数据";
     
+    
+    //准备数据,画线(后续提供画图能力)
+    UIButton *praparedBtn = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 100, 61)];
+       [praparedBtn setTitle:@"准备好了" forState:UIControlStateNormal];
+       praparedBtn.backgroundColor = UIColor.darkGrayColor;
+       [praparedBtn addTarget:self action:@selector(praparedBtnClick) forControlEvents:UIControlEventTouchUpInside];
+       [self.view addSubview:praparedBtn];
+    
+    
+    
+    
+    
+       
 }
-
-
+-(void)praparedBtnClick{
+    LQResultViewController *result = [[LQResultViewController alloc] init];
+    [self.navigationController pushViewController:result animated:YES];
+}
 
 @end

@@ -16,21 +16,8 @@
 
 -(CGFloat)getDijkstra{
     
-      //准备数据,画线(后续提供画图能力)
-      NSArray *arr = @[
-      @[@"A",@"B",@"12"],
-      @[@"A",@"G",@"14"],
-      @[@"A",@"F",@"16"],
-      @[@"B",@"C",@"10"],
-      @[@"B",@"F",@"7"],
-      @[@"G",@"F",@"14"],
-      @[@"G",@"E",@"8"],
-      @[@"F",@"C",@"6"],
-      @[@"F",@"E",@"2"],
-      @[@"C",@"D",@"3"],
-      @[@"C",@"E",@"5"],
-      @[@"E",@"D",@"4"]];
-      
+
+    NSArray *arr = self.linesArray;
       //解析路径model：end，start，value
       NSMutableArray *pathArray = [NSMutableArray arrayWithCapacity:5];
       for (NSArray *path in arr) {

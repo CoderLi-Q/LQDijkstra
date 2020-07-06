@@ -1,5 +1,5 @@
 //
-//  LQDijkstaTool.h
+//  LQResultViewController.h
 //  Dijkstra
 //
 //  Created by Schaffer on 2020/7/6.
@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LQPathModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LQDijkstraTool : NSObject
-@property (nonatomic , strong) NSArray *linesArray;
+@interface LQResultViewController : UIViewController
 
--(CGFloat)getDijkstra;
 @end
 
 NS_ASSUME_NONNULL_END
