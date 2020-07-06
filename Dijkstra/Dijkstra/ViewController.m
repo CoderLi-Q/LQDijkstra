@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "LQResultViewController.h"
+#import "LQDataView.h"
 @interface ViewController ()
 
 
@@ -32,7 +33,10 @@
     
     
     
-    
+    LQDataView *dataView = [[LQDataView alloc] initWithFrame:CGRectMake(0, 200, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height-150)];
+    dataView.number = 5;
+    dataView.backgroundColor = UIColor.lightGrayColor;
+    [self.view addSubview:dataView];
     
        
 }

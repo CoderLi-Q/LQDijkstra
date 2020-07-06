@@ -27,8 +27,6 @@
     [reckonBtn addTarget:self action:@selector(reckon) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:reckonBtn];
     
-    
-    
 }
 
 -(void)reckon{
@@ -49,8 +47,6 @@
     
     CGFloat value =  tool.getDijkstra;
     NSLog(@"value = %.f",value);
-    
-    
 }
 
 
