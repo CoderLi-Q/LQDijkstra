@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044D408324B33E4900D49E0E /* LQDijkstraTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408224B33E4800D49E0E /* LQDijkstraTool.m */; };
 		04F6090524B2BD4E00B4D37B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6090424B2BD4E00B4D37B /* AppDelegate.m */; };
 		04F6090824B2BD4E00B4D37B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6090724B2BD4E00B4D37B /* SceneDelegate.m */; };
 		04F6090B24B2BD4E00B4D37B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6090A24B2BD4E00B4D37B /* ViewController.m */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		044D408124B33E4800D49E0E /* LQDijkstraTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQDijkstraTool.h; sourceTree = "<group>"; };
+		044D408224B33E4800D49E0E /* LQDijkstraTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQDijkstraTool.m; sourceTree = "<group>"; };
 		04F6090024B2BD4E00B4D37B /* Dijkstra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dijkstra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F6090324B2BD4E00B4D37B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04F6090424B2BD4E00B4D37B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				04F6091524B2BD5100B4D37B /* main.m */,
 				04F6093824B2CB2C00B4D37B /* LQPathModel.h */,
 				04F6093924B2CB2C00B4D37B /* LQPathModel.m */,
+				044D408124B33E4800D49E0E /* LQDijkstraTool.h */,
+				044D408224B33E4800D49E0E /* LQDijkstraTool.m */,
 			);
 			path = Dijkstra;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				04F6093A24B2CB2C00B4D37B /* LQPathModel.m in Sources */,
 				04F6091624B2BD5100B4D37B /* main.m in Sources */,
 				04F6090824B2BD4E00B4D37B /* SceneDelegate.m in Sources */,
+				044D408324B33E4900D49E0E /* LQDijkstraTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
