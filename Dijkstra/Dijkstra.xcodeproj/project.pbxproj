@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044206DB24B42B4900E372C6 /* LQPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 044206DA24B42B4900E372C6 /* LQPointModel.m */; };
 		044D408324B33E4900D49E0E /* LQDijkstraTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408224B33E4800D49E0E /* LQDijkstraTool.m */; };
 		044D408924B3415D00D49E0E /* LQResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408824B3415D00D49E0E /* LQResultViewController.m */; };
 		044D408C24B343D100D49E0E /* LQDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408B24B343D100D49E0E /* LQDataView.m */; };
@@ -40,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		044206D824B41C6C00E372C6 /* Dijkstra.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dijkstra.entitlements; sourceTree = "<group>"; };
+		044206D924B42B4900E372C6 /* LQPointModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQPointModel.h; sourceTree = "<group>"; };
+		044206DA24B42B4900E372C6 /* LQPointModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQPointModel.m; sourceTree = "<group>"; };
 		044D408124B33E4800D49E0E /* LQDijkstraTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQDijkstraTool.h; sourceTree = "<group>"; };
 		044D408224B33E4800D49E0E /* LQDijkstraTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQDijkstraTool.m; sourceTree = "<group>"; };
 		044D408724B3415D00D49E0E /* LQResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQResultViewController.h; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 		04F6090224B2BD4E00B4D37B /* Dijkstra */ = {
 			isa = PBXGroup;
 			children = (
+				044206D824B41C6C00E372C6 /* Dijkstra.entitlements */,
 				04F6090324B2BD4E00B4D37B /* AppDelegate.h */,
 				04F6090424B2BD4E00B4D37B /* AppDelegate.m */,
 				04F6090624B2BD4E00B4D37B /* SceneDelegate.h */,
@@ -135,6 +140,8 @@
 				044D408224B33E4800D49E0E /* LQDijkstraTool.m */,
 				044D408A24B343D100D49E0E /* LQDataView.h */,
 				044D408B24B343D100D49E0E /* LQDataView.m */,
+				044206D924B42B4900E372C6 /* LQPointModel.h */,
+				044206DA24B42B4900E372C6 /* LQPointModel.m */,
 			);
 			path = Dijkstra;
 			sourceTree = "<group>";
@@ -290,6 +297,7 @@
 				04F6090B24B2BD4E00B4D37B /* ViewController.m in Sources */,
 				044D408C24B343D100D49E0E /* LQDataView.m in Sources */,
 				04F6090524B2BD4E00B4D37B /* AppDelegate.m in Sources */,
+				044206DB24B42B4900E372C6 /* LQPointModel.m in Sources */,
 				04F6093A24B2CB2C00B4D37B /* LQPathModel.m in Sources */,
 				04F6091624B2BD5100B4D37B /* main.m in Sources */,
 				04F6090824B2BD4E00B4D37B /* SceneDelegate.m in Sources */,
@@ -463,6 +471,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Dijkstra/Dijkstra.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Dijkstra/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -479,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Dijkstra/Dijkstra.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Dijkstra/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

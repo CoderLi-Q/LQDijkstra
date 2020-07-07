@@ -66,8 +66,8 @@
     
     for (int i = 0; i < number; i++) {
         
-        CGFloat x = arc4random_uniform(self.frame.size.width);
-        CGFloat y = arc4random_uniform(self.frame.size.height);
+        CGFloat x = arc4random_uniform(self.frame.size.width-100)+50;
+        CGFloat y = arc4random_uniform(self.frame.size.height-150)+50;
         
         
             UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(x, y, w, h)];
@@ -105,9 +105,10 @@
     path.lineWidth = 2;
     [UIColor.redColor setStroke];
     
-    
+    if (!CGPointEqualToPoint(self.beginPoint, CGPointZero) && !CGPointEqualToPoint(self.toPoint, CGPointZero)) {
         [path moveToPoint:self.beginPoint];
         [path addLineToPoint:self.toPoint];
+    }
     
     
     for (NSArray *array in self.linesArray) {
@@ -136,6 +137,10 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
+    
+        self.beginPoint = CGPointZero;
+        self.endPoint = CGPointZero;
+    
     if (!self.edit.selected && !self.moveItem.selected) {
         return;
     }else{
@@ -199,14 +204,24 @@
             UITouch *touch = touches.anyObject;
             self.endPoint = [touch locationInView:self];
             
-            [self.linesArray addObject:@[[NSValue valueWithCGPoint:self.beginPoint],[NSValue valueWithCGPoint:self.endPoint]]];
+            
+            UIView *endV = [self isInAnyView:self.endPoint event:event];
+            UIView *beginV = [self isInAnyView:self.beginPoint event:event];
+            if (endV && beginV) {
+                [self.linesArray addObject:@[[NSValue valueWithCGPoint:beginV.center],[NSValue valueWithCGPoint:endV.center]]];
+                self.beginPoint = CGPointZero;
+                self.toPoint = CGPointZero;
+                [self setNeedsDisplay];
+            }
+            
+            
+           
         }else{
             
         }
     }
     
-    self.beginPoint = CGPointZero;
-    self.endPoint = CGPointZero;
+
     
 }
 -(NSMutableArray *)linesArray{
