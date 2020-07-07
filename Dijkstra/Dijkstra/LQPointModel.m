@@ -9,5 +9,7 @@
 #import "LQPointModel.h"
 
 @implementation LQPointModel
-
+-(NSString *)description{
+    return [NSString stringWithFormat:@"start = %@,end = %@,view1 = %p, view2 = %p",_startPointValue,_endPointValue,&_startView,&_endView];
+}
 @end

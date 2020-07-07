@@ -6,14 +6,22 @@
 //  Copyright © 2020 LQ. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol LQPointModelProtocal <NSObject>
+
+
+
+@end
+
 
 @interface LQPointModel : NSObject
 @property (nonatomic ,strong) NSValue *startPointValue;
 @property (nonatomic ,strong) NSValue *endPointValue;
-
+@property (nonatomic , strong) UIView *startView;
+@property (nonatomic , strong) UIView *endView;
 
 @end
 

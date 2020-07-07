@@ -7,7 +7,7 @@
 //
 
 #import "LQDataView.h"
-
+#import "LQPointModel.h"
 
 @interface LQDataView ()
 @property (nonatomic , strong) NSMutableArray *linesArray;
@@ -111,10 +111,10 @@
     }
     
     
-    for (NSArray *array in self.linesArray) {
-        NSLog(@"%@",array);
-        CGPoint startPoint = [array[0] CGPointValue];
-        CGPoint endPoint = [array[1] CGPointValue];
+    for (LQPointModel *model in self.linesArray) {
+        NSLog(@"%@",model);
+        CGPoint startPoint = model.startPointValue.CGPointValue;
+        CGPoint endPoint = model.endPointValue.CGPointValue;
         
         [path moveToPoint:startPoint];
         [path addLineToPoint:endPoint];
@@ -208,7 +208,13 @@
             UIView *endV = [self isInAnyView:self.endPoint event:event];
             UIView *beginV = [self isInAnyView:self.beginPoint event:event];
             if (endV && beginV) {
-                [self.linesArray addObject:@[[NSValue valueWithCGPoint:beginV.center],[NSValue valueWithCGPoint:endV.center]]];
+                
+                LQPointModel *point = [[LQPointModel alloc] init];
+                point.startPointValue = [NSValue valueWithCGPoint:beginV.center];
+                point.endPointValue = [NSValue valueWithCGPoint:endV.center];
+                point.startView = beginV;
+                point.endView = endV;
+                [self.linesArray addObject:point];
                 self.beginPoint = CGPointZero;
                 self.toPoint = CGPointZero;
                 [self setNeedsDisplay];
