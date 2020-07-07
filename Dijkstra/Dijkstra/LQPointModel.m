@@ -12,4 +12,15 @@
 -(NSString *)description{
     return [NSString stringWithFormat:@"start = %@,end = %@,view1 = %p, view2 = %p",_startPointValue,_endPointValue,&_startView,&_endView];
 }
+
+-(NSString *)containView:(UIView *)view{
+    
+    if ([self.startView isEqual:view]) {
+        return @"startPointValue";
+    }else if ([self.endView isEqual:view]){
+        return @"endPointValue";
+    }
+    
+    return nil;
+}
 @end

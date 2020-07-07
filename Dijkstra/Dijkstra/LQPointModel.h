@@ -10,11 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LQPointModelProtocal <NSObject>
-
-
-
-@end
 
 
 @interface LQPointModel : NSObject
@@ -22,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSValue *endPointValue;
 @property (nonatomic , strong) UIView *startView;
 @property (nonatomic , strong) UIView *endView;
+-(NSString *)containView:(UIView *)view;
+
+
 
 @end
 

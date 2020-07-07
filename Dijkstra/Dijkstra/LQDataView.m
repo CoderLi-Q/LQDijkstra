@@ -44,6 +44,7 @@
     [edit setTitle:@"添加连接" forState:UIControlStateNormal];
     edit.backgroundColor = UIColor.darkGrayColor;
     [edit setTitle:@"连接完成" forState:UIControlStateSelected];
+    [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
     [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:edit];
     self.edit = edit;
@@ -54,6 +55,7 @@
         [edit setTitle:@"编辑位置" forState:UIControlStateNormal];
         edit.backgroundColor = UIColor.darkGrayColor;
         [edit setTitle:@"编辑完成" forState:UIControlStateSelected];
+        [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
         [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:edit];
         self.moveItem = edit;
@@ -90,6 +92,13 @@
 -(void)startEdit:(UIButton *)btn{
     btn.selected = !btn.selected;
     
+    if ([btn isEqual:self.edit] && btn.selected) {
+        self.moveItem.selected = NO;
+    }
+    if ([btn isEqual:self.moveItem] && btn.selected) {
+        self.edit.selected = NO;
+    }
+    
 }
 
 
@@ -97,7 +106,7 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code
     
-    if (!self.edit.selected) {
+    if (!self.edit.selected && !self.moveItem.selected) {
         return;
     }
     
@@ -190,7 +199,21 @@
                 CGRect fram = self.currentMoveView.frame;
                 fram.origin  = viewPoint;
                 self.currentMoveView.frame = fram;
-                NSLog(@"MoveStart--%@--toPoint = %@",NSStringFromCGPoint(fram.origin),NSStringFromCGPoint(self.toPoint));
+                
+                //找到线，更新点
+                
+                
+                for (LQPointModel *model in self.linesArray) {
+                     NSString *key = [model containView:self.currentMoveView];
+                    
+                    if (key != nil) {
+                        [model setValue:[NSValue valueWithCGPoint:self.currentMoveView.center] forKey:key];
+                        NSLog(@"model - %@",model);
+                    }
+                }
+                self.toPoint = CGPointZero;
+                [self setNeedsDisplay];
+            
             }
         }
     }
@@ -207,7 +230,7 @@
             
             UIView *endV = [self isInAnyView:self.endPoint event:event];
             UIView *beginV = [self isInAnyView:self.beginPoint event:event];
-            if (endV && beginV) {
+            if (endV && beginV && ![endV isEqual:beginV]) {
                 
                 LQPointModel *point = [[LQPointModel alloc] init];
                 point.startPointValue = [NSValue valueWithCGPoint:beginV.center];
