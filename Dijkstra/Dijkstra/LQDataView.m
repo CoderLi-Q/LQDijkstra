@@ -10,11 +10,18 @@
 
 
 @interface LQDataView ()
-@property (nonatomic , assign) CGPoint startPoint;
+@property (nonatomic , strong) NSMutableArray *linesArray;
+@property (nonatomic , assign) CGPoint beginPoint;
 @property (nonatomic , assign) CGPoint toPoint;
+@property (nonatomic , assign) CGPoint endPoint;
 @property (nonatomic , strong) UIButton *edit;
-@property (nonatomic , strong) NSMutableArray *lines;
 
+
+@property (nonatomic , strong) UIButton *moveItem;
+
+
+@property (nonatomic , strong) NSMutableArray *viewArray;
+@property (nonatomic , weak) UIView *currentMoveView;
 
 @end
 
@@ -33,55 +40,51 @@
 -(void)setNumber:(NSInteger)number{
     _number = number;
     
-    UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(200, 30, 50, 30)];
-    [edit setTitle:@"编辑" forState:UIControlStateNormal];
-    [edit setTitle:@"完成" forState:UIControlStateSelected];
+    UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(200, 30, 100, 30)];
+    [edit setTitle:@"添加连接" forState:UIControlStateNormal];
+    edit.backgroundColor = UIColor.darkGrayColor;
+    [edit setTitle:@"连接完成" forState:UIControlStateSelected];
     [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:edit];
     self.edit = edit;
     
+    
+    {
+        UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(80, 30, 100, 30)];
+        [edit setTitle:@"编辑位置" forState:UIControlStateNormal];
+        edit.backgroundColor = UIColor.darkGrayColor;
+        [edit setTitle:@"编辑完成" forState:UIControlStateSelected];
+        [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:edit];
+        self.moveItem = edit;
+    }
+    
+    
+
+    CGFloat w = 30;
+    CGFloat h = 30;
+    
     for (int i = 0; i < number; i++) {
-        {
-           UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(130, 230, 30, 30)];
-           view.backgroundColor = UIColor.darkGrayColor;
-               view.text = @"A";
-               view.textAlignment = NSTextAlignmentCenter;
-               view.layer.cornerRadius = 15;
-               view.layer.masksToBounds = YES;
-           [self addSubview:view];
-           }
-        }
-    
-    {
-    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(130, 130, 30, 30)];
-    view.backgroundColor = UIColor.darkGrayColor;
-        view.textAlignment = NSTextAlignmentCenter;
-        view.text = @"B";
-        view.layer.cornerRadius = 15;
-        view.layer.masksToBounds = YES;
-    [self addSubview:view];
+        
+        CGFloat x = arc4random_uniform(self.frame.size.width);
+        CGFloat y = arc4random_uniform(self.frame.size.height);
+        
+        
+            UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(x, y, w, h)];
+            view.backgroundColor = UIColor.darkGrayColor;
+
+            char a = 'A';
+            char n = a + i;
+            view.text = [NSString stringWithFormat:@"%c",n];
+            view.textAlignment = NSTextAlignmentCenter;
+            view.layer.cornerRadius = 15;
+            view.layer.masksToBounds = YES;
+            [self addSubview:view];
+        
+        [self.viewArray addObject:view];
     }
     
-    {
-    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(230, 130, 30, 30)];
-    view.backgroundColor = UIColor.darkGrayColor;
-        view.text = @"C";
-        view.textAlignment = NSTextAlignmentCenter;
-        view.layer.cornerRadius = 15;
-        view.layer.masksToBounds = YES;
-    [self addSubview:view];
-    }
-    
-    {
-    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(230, 230, 30, 30)];
-    view.backgroundColor = UIColor.darkGrayColor;
-        view.text = @"D";
-        view.textAlignment = NSTextAlignmentCenter;
-        view.layer.cornerRadius = 15;
-        view.layer.masksToBounds = YES;
-    [self addSubview:view];
-    }
-    
+  
 }
 
 -(void)startEdit:(UIButton *)btn{
@@ -91,58 +94,132 @@
 
 
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-    
-    UITouch *touch = touches.anyObject;
-    CGPoint point = [touch locationInView:self];
-    NSLog(@"start point = %@",NSStringFromCGPoint(point));
-    
-    self.startPoint = point;
-    
-    
-    
-}
--(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    NSLog(@"touched = %@",touches);
-    UITouch *touch = touches.anyObject;
-    CGPoint point = [touch locationInView:self];
-    NSLog(@"point = %@",NSStringFromCGPoint(point));
-    
-    self.toPoint = point;
-    
-    [self setNeedsDisplay];
-}
-
 - (void)drawRect:(CGRect)rect {
+    // Drawing code
+    
     if (!self.edit.selected) {
         return;
     }
-    NSLog(@"开始划线");
-    
-    
-    
-    
-    
     
     UIBezierPath *path = [UIBezierPath bezierPath];
-    [self.lines addObject:path];
-    [path moveToPoint:self.startPoint];
-    path.lineWidth = 1;
-    [[UIColor colorWithWhite:1.0 alpha:1] setStroke];
+    path.lineWidth = 2;
+    [UIColor.redColor setStroke];
+    
+    
+        [path moveToPoint:self.beginPoint];
+        [path addLineToPoint:self.toPoint];
+    
+    
+    for (NSArray *array in self.linesArray) {
+        NSLog(@"%@",array);
+        CGPoint startPoint = [array[0] CGPointValue];
+        CGPoint endPoint = [array[1] CGPointValue];
+        
+        [path moveToPoint:startPoint];
+        [path addLineToPoint:endPoint];
+    }
 
-    [path addLineToPoint:self.toPoint];
     [path stroke];
-    
-    
-    
+}
+
+-(UIView *)isInAnyView:(CGPoint )point event:(UIEvent *)event{
+
+    for (UIView *view in self.viewArray) {
+        CGPoint viewPoint = [self convertPoint:point toView:view];
+        if ([view pointInside:viewPoint withEvent:event]) {
+            return view;
+        }
+    }
+    return nil;
+}
+
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+
+    if (!self.edit.selected && !self.moveItem.selected) {
+        return;
+    }else{
+        if (self.edit.selected) {
+                UITouch *touch = touches.anyObject;
+            self.beginPoint = [touch locationInView:self];
+            
+            NSLog(@"start--%@",NSStringFromCGPoint(self.beginPoint));
+        }else if(self.moveItem.selected){
+            self.currentMoveView = nil;
+            UITouch *touch = touches.anyObject;
+            CGPoint point = [touch locationInView:self];
+            
+
+            
+            
+            UIView *vi = [self isInAnyView:point event:event];
+            if (vi) {
+                self.currentMoveView = vi;
+                self.beginPoint = point;
+                NSLog(@"Move--%@",NSStringFromCGPoint(self.beginPoint));
+            }
+            
+            
+        }
+    }
+
     
 }
--(NSMutableArray *)lines{
-    if (_lines == nil) {
-        _lines = [NSMutableArray arrayWithCapacity:2];
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    if (!self.edit.selected && !self.moveItem.selected) {
+        return;
+    }else{
+        if (self.edit.selected) {
+            UITouch *touch = touches.anyObject;
+            self.toPoint = [touch locationInView:self];
+            NSLog(@"start--%@",NSStringFromCGPoint(self.beginPoint));
+            [self setNeedsDisplay];
+        }else if(self.moveItem.selected){
+            UITouch *touch = touches.anyObject;
+            self.toPoint = [touch locationInView:self];
+            
+//            CGPoint viewPoint = [self convertPoint:self.toPoint toView:self.currentMoveView];
+            
+            if (self.currentMoveView) {
+                CGPoint viewPoint = [self convertPoint:self.toPoint toView:self];
+                CGRect fram = self.currentMoveView.frame;
+                fram.origin  = viewPoint;
+                self.currentMoveView.frame = fram;
+                NSLog(@"MoveStart--%@--toPoint = %@",NSStringFromCGPoint(fram.origin),NSStringFromCGPoint(self.toPoint));
+            }
+        }
     }
-    return _lines;
+    
+}
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    if (!self.edit.selected && !self.moveItem.selected) {
+        return;
+    }else{
+        if (self.edit.selected) {
+            UITouch *touch = touches.anyObject;
+            self.endPoint = [touch locationInView:self];
+            
+            [self.linesArray addObject:@[[NSValue valueWithCGPoint:self.beginPoint],[NSValue valueWithCGPoint:self.endPoint]]];
+        }else{
+            
+        }
+    }
+    
+    self.beginPoint = CGPointZero;
+    self.endPoint = CGPointZero;
+    
+}
+-(NSMutableArray *)linesArray{
+    if (_linesArray == nil) {
+        _linesArray = [NSMutableArray arrayWithCapacity:2];
+    }
+    return _linesArray;
+}
+-(NSMutableArray *)viewArray{
+    if (_viewArray == nil) {
+        _viewArray = [NSMutableArray arrayWithCapacity:2];
+    }
+    return _viewArray;
 }
 
 @end
