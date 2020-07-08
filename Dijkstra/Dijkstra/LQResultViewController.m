@@ -11,6 +11,7 @@
 #import "LQDataView.h"
 @interface LQResultViewController ()
 @property (nonatomic , weak) UILabel *label;
+@property (nonatomic , strong) LQDataView *dataView;
 @end
 
 @implementation LQResultViewController
@@ -29,10 +30,18 @@
     [self.view addSubview:reckonBtn];
     
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 61)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(210, 100, 200, 61)];
     self.label = label;
     label.textColor = UIColor.redColor;
     [self.view addSubview:label];
+    
+    
+    
+   LQDataView *dataView = [[LQDataView alloc] initWithFrame:CGRectMake(0, 200, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height-150)];
+    dataView.pathDatas = self.pathDatas;
+    self.dataView = dataView;
+    dataView.backgroundColor = UIColor.lightGrayColor;
+    [self.view addSubview:dataView];
     
 }
 
@@ -49,9 +58,6 @@
     NSLog(@"value = %.f",value);
     self.label.text = [NSString stringWithFormat:@"最短路径是长度：%.f",value];
 }
-
-
-//LQDataView
 
 
 @end

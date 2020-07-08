@@ -21,12 +21,12 @@
 
 @property (nonatomic , strong) UIButton *moveItem;
 
-
 @property (nonatomic , strong) NSMutableArray *viewArray;
 @property (nonatomic , weak) UIView *currentMoveView;
 
 @property (nonatomic , weak) UILabel *temp1Label;
 @property (nonatomic , weak) UILabel *temp2Label;
+
 @end
 
 @implementation LQDataView
@@ -384,7 +384,7 @@
 -(void)setPathDatas:(NSArray<LQPathModel *> *)pathDatas{
     
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:3];
-    for (LQPathModel *model in self.pathDatas) {
+    for (LQPathModel *model in pathDatas) {
         LQPointModel *path = [[LQPointModel alloc] init];
         CGFloat x = arc4random_uniform(self.frame.size.width-100)+50;
         CGFloat y = arc4random_uniform(self.frame.size.height-150)+50;
@@ -393,24 +393,60 @@
         y = arc4random_uniform(self.frame.size.height-150)+50;
         path.endPointValue = [NSValue valueWithCGPoint:CGPointMake(x, y)];
         
+        
+      
+        
+        {
         UILabel *startView = [[UILabel alloc] init];
+        startView.text = model.startPoint;
+        startView.backgroundColor = UIColor.darkGrayColor;
         CGPoint start = path.startPointValue.CGPointValue;
         startView.frame = CGRectMake(start.x-15, start.y-15, 30, 30);
         startView.textAlignment = NSTextAlignmentCenter;
         startView.layer.cornerRadius = 15;
         startView.layer.masksToBounds = YES;
         path.startView = startView;
-        [self addSubview:startView];
+            
+            //如果包含startView.text，需要替换为之前的，保证每个节点只有一份
+            BOOL isHave = NO;
+            for (UILabel *la in self.viewArray) {
+                if ([la.text isEqualToString:startView.text]) {
+                    path.startView = la;
+                    path.startPointValue = [NSValue valueWithCGPoint:la.center];
+                    
+                    isHave = YES;
+                }
+            }
+            if (!isHave) {
+                [self.viewArray addObject:startView];
+                [self addSubview:startView];
+            }
+        }
         
         {
             UILabel *startView = [[UILabel alloc] init];
+            startView.text = model.endPoint;
+            startView.backgroundColor = UIColor.darkGrayColor;
             CGPoint start = path.endPointValue.CGPointValue;
             startView.frame = CGRectMake(start.x-15, start.y-15, 30, 30);
             startView.textAlignment = NSTextAlignmentCenter;
             startView.layer.cornerRadius = 15;
             startView.layer.masksToBounds = YES;
             path.endView = startView;
-            [self addSubview:startView];
+            
+            //如果包含startView.text，需要替换为之前的，保证每个节点只有一份
+            BOOL isHave = NO;
+            for (UILabel *la in self.viewArray) {
+                if ([la.text isEqualToString:startView.text]) {
+                    path.endView = la;
+                    path.endPointValue = [NSValue valueWithCGPoint:la.center];
+                    isHave = YES;
+                }
+            }
+            if (!isHave) {
+                [self.viewArray addObject:startView];
+                [self addSubview:startView];
+            }
         }
         
         path.value = model.value;
