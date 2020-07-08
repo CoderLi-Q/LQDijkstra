@@ -15,8 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LQPointModel : NSObject
 @property (nonatomic ,strong) NSValue *startPointValue;
 @property (nonatomic ,strong) NSValue *endPointValue;
-@property (nonatomic , strong) UIView *startView;
-@property (nonatomic , strong) UIView *endView;
+@property (nonatomic , strong) UILabel *startView;
+@property (nonatomic , strong) UILabel *endView;
+@property (nonatomic ,assign) NSInteger value;
+@property (nonatomic , strong) UITextField *textf;
+
 -(NSString *)containView:(UIView *)view;
 
 

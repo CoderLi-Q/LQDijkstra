@@ -11,7 +11,7 @@
 #import "LQDataView.h"
 @interface ViewController ()
 
-
+@property (nonatomic , weak) LQDataView *dataView;
 
 @end
 
@@ -34,7 +34,8 @@
     
     
     LQDataView *dataView = [[LQDataView alloc] initWithFrame:CGRectMake(0, 200, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height-150)];
-    dataView.number = 5;
+    dataView.number = 7;
+    self.dataView = dataView;
     dataView.backgroundColor = UIColor.lightGrayColor;
     [self.view addSubview:dataView];
     
@@ -42,7 +43,11 @@
 }
 -(void)praparedBtnClick{
     LQResultViewController *result = [[LQResultViewController alloc] init];
+    result.pathDatas = [NSArray arrayWithArray:self.dataView.pathDatas];
     [self.navigationController pushViewController:result animated:YES];
 }
+
+
+
 
 @end

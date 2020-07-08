@@ -17,31 +17,31 @@
 -(CGFloat)getDijkstra{
     
 
-    NSArray *arr = self.linesArray;
-      //解析路径model：end，start，value
-      NSMutableArray *pathArray = [NSMutableArray arrayWithCapacity:5];
-      for (NSArray *path in arr) {
-          LQPathModel *pathModel = [[LQPathModel alloc] init];
-          for (int i = 0; i < path.count; i++) {
-              switch (i) {
-                  case 0:
-                      pathModel.startPoint = path[0];
-                      break;
-                  case 1:
-                      pathModel.endPoint = path[1];
-                      break;
-                  case 2:
-                      pathModel.value = [path[2] intValue];
-                      break;
-                      
-                  default:
-                      break;
-              }
-          }
-          [pathArray addObject:pathModel];
-      }
-      self.pathArray = pathArray;
-      NSLog(@"原始数据%@--count = %ld",pathArray,pathArray.count);
+//    NSArray *arr = self.linesArray;
+//      //解析路径model：end，start，value
+//      NSMutableArray *pathArray = [NSMutableArray arrayWithCapacity:5];
+//      for (NSArray *path in arr) {
+//          LQPathModel *pathModel = [[LQPathModel alloc] init];
+//          for (int i = 0; i < path.count; i++) {
+//              switch (i) {
+//                  case 0:
+//                      pathModel.startPoint = path[0];
+//                      break;
+//                  case 1:
+//                      pathModel.endPoint = path[1];
+//                      break;
+//                  case 2:
+//                      pathModel.value = [path[2] intValue];
+//                      break;
+//
+//                  default:
+//                      break;
+//              }
+//          }
+//          [pathArray addObject:pathModel];
+//      }
+      self.pathArray = self.linesArray;
+      NSLog(@"原始数据%@--count = %ld",_pathArray,_pathArray.count);
      
       
       
@@ -49,21 +49,34 @@
 
        //初始化起点
           LQPathModel *pathStart = [[LQPathModel alloc] init];
-          pathStart.startPoint = @"D";
-          pathStart.endPoint = @"D";
+    pathStart.startPoint = self.startPoint;
+          pathStart.endPoint = self.startPoint;
           pathStart.value = 0;
           NSMutableArray <LQPathModel *>*sArray = [NSMutableArray arrayWithObject:pathStart];
       NSLog(@"S数据 = %@, count = %ld",sArray,sArray.count);
+    
       //初始化除起点外的顶点
-        NSMutableArray *noStartPoints = [NSMutableArray arrayWithArray:@[@"A",@"B",@"C",@"E",@"F",@"G"]];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:3];
+    for (LQPathModel *m in self.pathArray) {
+       
+        if (![array containsObject:m.startPoint]) {
+                [array addObject:m.startPoint];
+        }
+        if (![array containsObject:m.endPoint]) {
+                [array addObject:m.endPoint];
+        }
+        
+    }
+    
+        NSMutableArray *noStartPoints = [NSMutableArray arrayWithArray:array];
       
     
 
        
       NSMutableArray *uArray = [NSMutableArray arrayWithCapacity:2];
-      NSString *endPoint = @"D";
+    NSString *endPoint = self.startPoint;
         NSString *lastPoint = @"";
-      while (![endPoint isEqualToString:@"A"]) {
+    while (![endPoint isEqualToString:self.endPoint]) {
           LQPathModel *mixValuepath = nil;
           //切换顶点
           NSString * currentPoint = endPoint;
@@ -123,7 +136,7 @@
             LQPathModel *contaionPath = [self isContainLineWithP1:point p2:model.endPoint];
             if (contaionPath) {//当前点与之前的结算点直接链接，value可计算
                 if(pathStart.value == 0 || pathStart.value > contaionPath.value + model.value){
-                pathStart.startPoint = @"D";
+                    pathStart.startPoint = self.startPoint;
                 pathStart.endPoint = point;
                 pathStart.value = contaionPath.value + model.value;
                 }
@@ -136,7 +149,7 @@
         }
         
         if (pathStart.startPoint == nil) {
-            pathStart.startPoint = @"D";
+            pathStart.startPoint = self.startPoint;
             pathStart.endPoint = point;
             pathStart.value = MAXFLOAT;
         }

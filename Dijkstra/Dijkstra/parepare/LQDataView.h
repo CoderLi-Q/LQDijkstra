@@ -1,5 +1,5 @@
 //
-//  LQDijkstaTool.h
+//  LQDataView.h
 //  Dijkstra
 //
 //  Created by Schaffer on 2020/7/6.
@@ -10,10 +10,11 @@
 #import "LQPathModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LQDijkstraTool : NSObject
-@property (nonatomic , strong) NSArray *linesArray;
+@interface LQDataView : UIView
 
--(CGFloat)getDijkstra;
+@property (nonatomic , strong) NSArray <LQPathModel *> *pathDatas;
+
+@property (nonatomic ,assign) NSInteger number;
 @end
 
 NS_ASSUME_NONNULL_END

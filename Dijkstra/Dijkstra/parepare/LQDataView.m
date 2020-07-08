@@ -8,13 +8,15 @@
 
 #import "LQDataView.h"
 #import "LQPointModel.h"
-
-@interface LQDataView ()
+#define  kWindowSize UIScreen.mainScreen.bounds.size
+@interface LQDataView ()<UITextFieldDelegate>
 @property (nonatomic , strong) NSMutableArray *linesArray;
 @property (nonatomic , assign) CGPoint beginPoint;
 @property (nonatomic , assign) CGPoint toPoint;
 @property (nonatomic , assign) CGPoint endPoint;
 @property (nonatomic , strong) UIButton *edit;
+@property (nonatomic , weak) UITextField *currentEditTextField;
+@property (nonatomic , assign) CGRect origFrame;
 
 
 @property (nonatomic , strong) UIButton *moveItem;
@@ -23,6 +25,8 @@
 @property (nonatomic , strong) NSMutableArray *viewArray;
 @property (nonatomic , weak) UIView *currentMoveView;
 
+@property (nonatomic , weak) UILabel *temp1Label;
+@property (nonatomic , weak) UILabel *temp2Label;
 @end
 
 @implementation LQDataView
@@ -32,7 +36,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
     }
     return self;
 }
@@ -90,25 +95,31 @@
 }
 
 -(void)startEdit:(UIButton *)btn{
-    btn.selected = !btn.selected;
+    BOOL is = !btn.selected;
     
-    if ([btn isEqual:self.edit] && btn.selected) {
-        self.moveItem.selected = NO;
-    }
-    if ([btn isEqual:self.moveItem] && btn.selected) {
-        self.edit.selected = NO;
-    }
     
+    if ([btn isEqual:self.edit]) {
+           if (!btn.selected) {
+               
+               self.moveItem.selected = NO;
+           }else{
+               self.beginPoint = CGPointZero;
+               self.endPoint = CGPointZero;
+               [self setNeedsDisplay];
+           }
+       }
+       if ([btn isEqual:self.moveItem] && !btn.selected) {
+           self.edit.selected = NO;
+       }
+    
+    
+    btn.selected = is;
 }
 
 
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    
-    if (!self.edit.selected && !self.moveItem.selected) {
-        return;
-    }
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.lineWidth = 2;
@@ -124,6 +135,9 @@
         NSLog(@"%@",model);
         CGPoint startPoint = model.startPointValue.CGPointValue;
         CGPoint endPoint = model.endPointValue.CGPointValue;
+        CGPoint center = CGPointMake((startPoint.x+endPoint.x)/2.0, (startPoint.y+endPoint.y)/2.0);
+        
+        model.textf.frame = CGRectMake(center.x-15, center.y-15, 30, 30);
         
         [path moveToPoint:startPoint];
         [path addLineToPoint:endPoint];
@@ -145,16 +159,16 @@
 
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-
+    [self.currentEditTextField resignFirstResponder];
     
-        self.beginPoint = CGPointZero;
-        self.endPoint = CGPointZero;
+    self.beginPoint = CGPointZero;
+    self.endPoint = CGPointZero;
     
     if (!self.edit.selected && !self.moveItem.selected) {
         return;
     }else{
         if (self.edit.selected) {
-                UITouch *touch = touches.anyObject;
+            UITouch *touch = touches.anyObject;
             self.beginPoint = [touch locationInView:self];
             
             NSLog(@"start--%@",NSStringFromCGPoint(self.beginPoint));
@@ -163,7 +177,7 @@
             UITouch *touch = touches.anyObject;
             CGPoint point = [touch locationInView:self];
             
-
+            
             
             
             UIView *vi = [self isInAnyView:point event:event];
@@ -176,7 +190,7 @@
             
         }
     }
-
+    
     
 }
 -(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -237,6 +251,7 @@
                 point.endPointValue = [NSValue valueWithCGPoint:endV.center];
                 point.startView = beginV;
                 point.endView = endV;
+                [self addValueWithModel:point];
                 [self.linesArray addObject:point];
                 self.beginPoint = CGPointZero;
                 self.toPoint = CGPointZero;
@@ -249,10 +264,123 @@
             
         }
     }
-    
+}
 
+
+- (void)addValueWithModel:(LQPointModel *)model{
+    UITextField *textF = [[UITextField alloc] init];
+    textF.textAlignment = NSTextAlignmentCenter;
+    textF.delegate = self;
+    textF.keyboardType = UIKeyboardTypeNumberPad;
+    CGPoint begin = model.startPointValue.CGPointValue;
+    CGPoint end = model.endPointValue.CGPointValue;
+    CGPoint center = CGPointMake((begin.x+end.x)/2.0, (begin.y+end.y)/2.0);
+    
+    textF.frame = CGRectMake(center.x-15, center.y-15, 30, 30);
+    textF.text = @"15";
+    
+    
+    model.textf = textF;
+    [self addSubview:textF];
+}
+
+#pragma mark - textFieldDelegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    self.currentEditTextField = textField;
+    self.origFrame = textField.frame;
+    
+    [self showTempViewWithDuration:0.25 y:510];
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    self.currentEditTextField.frame = self.origFrame;
+    self.currentEditTextField = nil;
+}
+
+
+
+-(void)showTempViewWithDuration:(NSTimeInterval)duration y:(CGFloat)y{
+    //获取两端点
+    LQPointModel *currentM = nil;
+    for (LQPointModel *model in self.linesArray) {
+        if ([model.textf isEqual:self.currentEditTextField]) {
+            currentM = model;
+            break;
+        }
+    }
+    
+    NSString *p1 = currentM.startView.text;
+    NSString *p2 = currentM.endView.text;
+    
+    //创建label在textf两端
+    if (self.temp1Label == nil) {
+        UILabel *tempLabel1 = [[UILabel alloc] init];
+      
+        tempLabel1.textColor = UIColor.greenColor;
+        self.temp1Label = tempLabel1;
+        [self addSubview:self.temp1Label];
+    }
+    if (self.temp2Label == nil) {
+        UILabel *tempLabel2 = [[UILabel alloc] init];
+       
+        tempLabel2.textColor = UIColor.greenColor;
+        self.temp2Label = tempLabel2;
+        [self addSubview:self.temp2Label];
+    }
+    self.temp1Label.text = p1;
+    self.temp2Label.text = p2;
+
+    [UIView animateWithDuration:duration animations:^{
+        
+        self.currentEditTextField.frame = CGRectMake((kWindowSize.width-self.origFrame.size.width)/2, y-self.origFrame.size.height-10-self.frame.origin.y, self.origFrame.size.width, self.origFrame.size.height);
+        
+        self.temp1Label.frame = CGRectMake(self.currentEditTextField.frame.origin.x - 30 - 10, self.currentEditTextField.frame.origin.y, 30, self.currentEditTextField.frame.size.height);
+        self.temp2Label.frame = CGRectMake(CGRectGetMaxX(self.currentEditTextField.frame) +  10, self.currentEditTextField.frame.origin.y, 30, self.currentEditTextField.frame.size.height);
+        self.temp2Label.alpha = 1;
+        self.temp1Label.alpha = 1;
+    }];
+}
+
+-(void)keyboardShow:(NSNotification *)noti{
+    NSLog(@"%@",noti);
+    NSDictionary *userInfo = noti.userInfo;
+    CGFloat duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGRect rect = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat y = rect.origin.y;
+//    [self showTempViewWithDuration:duration y:y];
     
 }
+
+-(void)keyboardHidden:(NSNotification *)noti{
+    NSLog(@"%@",noti);
+    NSDictionary *userInfo = noti.userInfo;
+    CGFloat duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    
+    [UIView animateWithDuration:duration animations:^{
+        self.temp2Label.alpha = 0;
+        self.temp1Label.alpha = 0;
+            self.currentEditTextField.frame = self.origFrame;
+        
+    }completion:^(BOOL finished) {
+
+    }];
+
+}
+
+-(NSArray<LQPathModel *> *)pathDatas{
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:3];
+    for (LQPointModel *model in self.linesArray) {
+        LQPathModel *path = [[LQPathModel alloc] init];
+        path.startPoint = model.startView.text;
+        path.endPoint = model.endView.text;
+        path.value = model.textf.text.floatValue;
+        
+        [arr addObject:path];
+    }
+    return arr;
+}
+
 -(NSMutableArray *)linesArray{
     if (_linesArray == nil) {
         _linesArray = [NSMutableArray arrayWithCapacity:2];

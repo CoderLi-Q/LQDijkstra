@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LQResultViewController : UIViewController
-
+@property (nonatomic , strong) NSArray *pathDatas;
 @end
 
 NS_ASSUME_NONNULL_END

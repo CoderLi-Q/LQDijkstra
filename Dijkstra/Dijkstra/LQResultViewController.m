@@ -9,7 +9,7 @@
 #import "LQResultViewController.h"
 #import "LQDijkstraTool.h"
 @interface LQResultViewController ()
-
+@property (nonatomic , weak) UILabel *label;
 @end
 
 @implementation LQResultViewController
@@ -27,26 +27,26 @@
     [reckonBtn addTarget:self action:@selector(reckon) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:reckonBtn];
     
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 150, 61)];
+    self.label = label;
+    label.textColor = UIColor.redColor;
+    [self.view addSubview:label];
+    
 }
 
 -(void)reckon{
+
+    
+    
     LQDijkstraTool *tool = LQDijkstraTool.new;
-    tool.linesArray =  @[
-        @[@"A",@"B",@"12"],
-        @[@"A",@"G",@"14"],
-        @[@"A",@"F",@"16"],
-        @[@"B",@"C",@"10"],
-        @[@"B",@"F",@"7"],
-        @[@"G",@"F",@"14"],
-        @[@"G",@"E",@"8"],
-        @[@"F",@"C",@"6"],
-        @[@"F",@"E",@"2"],
-        @[@"C",@"D",@"3"],
-        @[@"C",@"E",@"5"],
-        @[@"E",@"D",@"4"]];
+    tool.startPoint = @"D";
+    tool.endPoint = @"A";
+    tool.linesArray = self.pathDatas;
     
     CGFloat value =  tool.getDijkstra;
     NSLog(@"value = %.f",value);
+    self.label.text = [NSString stringWithFormat:@"最短路径是长度：%.f",value];
 }
 
 
