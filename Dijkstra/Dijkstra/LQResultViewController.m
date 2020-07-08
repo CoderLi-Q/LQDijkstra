@@ -8,6 +8,7 @@
 
 #import "LQResultViewController.h"
 #import "LQDijkstraTool.h"
+#import "LQDataView.h"
 @interface LQResultViewController ()
 @property (nonatomic , weak) UILabel *label;
 @end
@@ -28,7 +29,7 @@
     [self.view addSubview:reckonBtn];
     
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 150, 61)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 61)];
     self.label = label;
     label.textColor = UIColor.redColor;
     [self.view addSubview:label];
@@ -48,6 +49,9 @@
     NSLog(@"value = %.f",value);
     self.label.text = [NSString stringWithFormat:@"最短路径是长度：%.f",value];
 }
+
+
+//LQDataView
 
 
 @end

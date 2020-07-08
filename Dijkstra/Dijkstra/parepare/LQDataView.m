@@ -381,6 +381,62 @@
     return arr;
 }
 
+-(void)setPathDatas:(NSArray<LQPathModel *> *)pathDatas{
+    
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:3];
+    for (LQPathModel *model in self.pathDatas) {
+        LQPointModel *path = [[LQPointModel alloc] init];
+        CGFloat x = arc4random_uniform(self.frame.size.width-100)+50;
+        CGFloat y = arc4random_uniform(self.frame.size.height-150)+50;
+        path.startPointValue = [NSValue valueWithCGPoint:CGPointMake(x, y)];
+        x = arc4random_uniform(self.frame.size.width-100)+50;
+        y = arc4random_uniform(self.frame.size.height-150)+50;
+        path.endPointValue = [NSValue valueWithCGPoint:CGPointMake(x, y)];
+        
+        UILabel *startView = [[UILabel alloc] init];
+        CGPoint start = path.startPointValue.CGPointValue;
+        startView.frame = CGRectMake(start.x-15, start.y-15, 30, 30);
+        startView.textAlignment = NSTextAlignmentCenter;
+        startView.layer.cornerRadius = 15;
+        startView.layer.masksToBounds = YES;
+        path.startView = startView;
+        [self addSubview:startView];
+        
+        {
+            UILabel *startView = [[UILabel alloc] init];
+            CGPoint start = path.endPointValue.CGPointValue;
+            startView.frame = CGRectMake(start.x-15, start.y-15, 30, 30);
+            startView.textAlignment = NSTextAlignmentCenter;
+            startView.layer.cornerRadius = 15;
+            startView.layer.masksToBounds = YES;
+            path.endView = startView;
+            [self addSubview:startView];
+        }
+        
+        path.value = model.value;
+        
+        
+        {
+            UITextField *textF = [[UITextField alloc] init];
+            textF.textAlignment = NSTextAlignmentCenter;
+            textF.delegate = self;
+            textF.keyboardType = UIKeyboardTypeNumberPad;
+            CGPoint begin = path.startPointValue.CGPointValue;
+            CGPoint end = path.endPointValue.CGPointValue;
+            CGPoint center = CGPointMake((begin.x+end.x)/2.0, (begin.y+end.y)/2.0);
+            
+            textF.frame = CGRectMake(center.x-15, center.y-15, 30, 30);
+            [self addSubview:textF];
+            path.textf = textF;
+        }
+        [arr addObject:path];
+    }
+    self.linesArray = [NSArray arrayWithArray:arr];
+    [self setNeedsDisplay];
+}
+
+
+
 -(NSMutableArray *)linesArray{
     if (_linesArray == nil) {
         _linesArray = [NSMutableArray arrayWithCapacity:2];

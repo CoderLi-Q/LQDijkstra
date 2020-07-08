@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSValue *endPointValue;
 @property (nonatomic , strong) UILabel *startView;
 @property (nonatomic , strong) UILabel *endView;
-@property (nonatomic ,assign) NSInteger value;
+@property (nonatomic ,assign) CGFloat value;
 @property (nonatomic , strong) UITextField *textf;
 
 -(NSString *)containView:(UIView *)view;

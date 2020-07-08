@@ -9,8 +9,28 @@
 #import "LQPathModel.h"
 
 @implementation LQPathModel
+-(void)encodeWithCoder:(NSCoder *)coder{
+    [coder encodeObject:_startPoint forKey:@"startPoint"];
+    [coder encodeObject:_endPoint forKey:@"endPoint"];
+    [coder encodeFloat:_value forKey:@"value"];
+    
+}
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super init];
+    if (self) {
+        _startPoint = [coder decodeObjectForKey:@"startPoint"];
+        _endPoint = [coder decodeObjectForKey:@"endPoint"];
+        _value = [coder decodeFloatForKey:@"value"];
+        
+    }
+    return self;
+}
+
+
+
 -(NSString *)description{
-    return [NSString stringWithFormat:@"startPoint = %@,endPoint = %@,value=%.f",_startPoint,_endPoint,_value];
+    return [NSString stringWithFormat:@" %@ - %@ - %.f",_startPoint,_endPoint,_value];
 }
 -(void)removePath:(NSString *)path{
     if (path == nil) {

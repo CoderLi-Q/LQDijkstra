@@ -10,10 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LQPathModel : NSObject
+@interface LQPathModel : NSObject<NSCoding>
 @property (nonatomic ,copy) NSString *startPoint;
 @property (nonatomic ,copy) NSString *endPoint;
-@property (nonatomic ,assign) float value;
+@property (nonatomic ,assign) CGFloat value;
 @property (nonatomic , strong) NSArray *paths;//暂时没有实现
 
 -(void)addPaths:(NSArray *)paths;

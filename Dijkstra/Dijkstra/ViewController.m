@@ -33,7 +33,7 @@
        [praparedBtn addTarget:self action:@selector(praparedBtnClick) forControlEvents:UIControlEventTouchUpInside];
        [self.view addSubview:praparedBtn];
     {
-    UIButton *history = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 100, 61)];
+    UIButton *history = [[UIButton alloc] initWithFrame:CGRectMake(220, 100, 100, 61)];
        [history setTitle:@"历史记录" forState:UIControlStateNormal];
        history.backgroundColor = UIColor.darkGrayColor;
        [history addTarget:self action:@selector(history) forControlEvents:UIControlEventTouchUpInside];
