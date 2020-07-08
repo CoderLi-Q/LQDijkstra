@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0419C63F24B5753B006F911F /* LQDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0419C63E24B5753B006F911F /* LQDataCache.m */; };
+		0419C64524B59FA1006F911F /* LQHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0419C64424B59FA1006F911F /* LQHistoryViewController.m */; };
 		044206DB24B42B4900E372C6 /* LQPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 044206DA24B42B4900E372C6 /* LQPointModel.m */; };
 		044D408324B33E4900D49E0E /* LQDijkstraTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408224B33E4800D49E0E /* LQDijkstraTool.m */; };
 		044D408924B3415D00D49E0E /* LQResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D408824B3415D00D49E0E /* LQResultViewController.m */; };
@@ -44,6 +45,8 @@
 /* Begin PBXFileReference section */
 		0419C63D24B5753B006F911F /* LQDataCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQDataCache.h; sourceTree = "<group>"; };
 		0419C63E24B5753B006F911F /* LQDataCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQDataCache.m; sourceTree = "<group>"; };
+		0419C64324B59FA1006F911F /* LQHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQHistoryViewController.h; sourceTree = "<group>"; };
+		0419C64424B59FA1006F911F /* LQHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQHistoryViewController.m; sourceTree = "<group>"; };
 		044206D824B41C6C00E372C6 /* Dijkstra.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dijkstra.entitlements; sourceTree = "<group>"; };
 		044206D924B42B4900E372C6 /* LQPointModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LQPointModel.h; sourceTree = "<group>"; };
 		044206DA24B42B4900E372C6 /* LQPointModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LQPointModel.m; sourceTree = "<group>"; };
@@ -158,6 +161,8 @@
 				04F6090A24B2BD4E00B4D37B /* ViewController.m */,
 				044D408724B3415D00D49E0E /* LQResultViewController.h */,
 				044D408824B3415D00D49E0E /* LQResultViewController.m */,
+				0419C64324B59FA1006F911F /* LQHistoryViewController.h */,
+				0419C64424B59FA1006F911F /* LQHistoryViewController.m */,
 				04F6090C24B2BD4E00B4D37B /* Main.storyboard */,
 				04F6090F24B2BD5100B4D37B /* Assets.xcassets */,
 				04F6091124B2BD5100B4D37B /* LaunchScreen.storyboard */,
@@ -321,6 +326,7 @@
 				044206DB24B42B4900E372C6 /* LQPointModel.m in Sources */,
 				04F6093A24B2CB2C00B4D37B /* LQPathModel.m in Sources */,
 				04F6091624B2BD5100B4D37B /* main.m in Sources */,
+				0419C64524B59FA1006F911F /* LQHistoryViewController.m in Sources */,
 				04F6090824B2BD4E00B4D37B /* SceneDelegate.m in Sources */,
 				0419C63F24B5753B006F911F /* LQDataCache.m in Sources */,
 				044D408324B33E4900D49E0E /* LQDijkstraTool.m in Sources */,
