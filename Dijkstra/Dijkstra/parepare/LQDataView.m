@@ -38,6 +38,27 @@
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
+        
+        UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(200, 30, 100, 30)];
+        [edit setTitle:@"添加连接" forState:UIControlStateNormal];
+        edit.backgroundColor = UIColor.darkGrayColor;
+        [edit setTitle:@"连接完成" forState:UIControlStateSelected];
+        [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
+        [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:edit];
+        self.edit = edit;
+        
+        
+        {
+            UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(80, 30, 100, 30)];
+            [edit setTitle:@"编辑位置" forState:UIControlStateNormal];
+            edit.backgroundColor = UIColor.darkGrayColor;
+            [edit setTitle:@"编辑完成" forState:UIControlStateSelected];
+            [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
+            [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:edit];
+            self.moveItem = edit;
+        }
     }
     return self;
 }
@@ -45,26 +66,7 @@
 -(void)setNumber:(NSInteger)number{
     _number = number;
     
-    UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(200, 30, 100, 30)];
-    [edit setTitle:@"添加连接" forState:UIControlStateNormal];
-    edit.backgroundColor = UIColor.darkGrayColor;
-    [edit setTitle:@"连接完成" forState:UIControlStateSelected];
-    [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
-    [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:edit];
-    self.edit = edit;
     
-    
-    {
-        UIButton *edit = [[UIButton alloc] initWithFrame:CGRectMake(80, 30, 100, 30)];
-        [edit setTitle:@"编辑位置" forState:UIControlStateNormal];
-        edit.backgroundColor = UIColor.darkGrayColor;
-        [edit setTitle:@"编辑完成" forState:UIControlStateSelected];
-        [edit setTitleColor:UIColor.redColor forState:UIControlStateSelected];
-        [edit addTarget:self action:@selector(startEdit:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:edit];
-        self.moveItem = edit;
-    }
     
     
 
@@ -460,7 +462,7 @@
             CGPoint begin = path.startPointValue.CGPointValue;
             CGPoint end = path.endPointValue.CGPointValue;
             CGPoint center = CGPointMake((begin.x+end.x)/2.0, (begin.y+end.y)/2.0);
-            
+            textF.text = [NSString stringWithFormat:@"%.f",model.value];
             textF.frame = CGRectMake(center.x-15, center.y-15, 30, 30);
             [self addSubview:textF];
             path.textf = textF;
